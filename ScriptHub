@@ -1,0 +1,218 @@
+
+
+if game.PlaceId == 155615604 then
+    local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
+    local Window = OrionLib:MakeWindow({Name = "PrisonLife", HidePremium = true, SaveConfig = true, ConfigFolder = "PrisonLife"})
+-- Main
+    local Main = Window:MakeTab({
+        Name = "Main",
+        Icon = "rbxassetid://4483345998",
+        PremiumOnly = false
+    })
+    
+    local MainSection = Main:AddSection({
+        Name = "Main"
+    })
+
+    Main:AddDropdown({
+        Name = "Give Gun",
+        Default = "1",
+        Options = {"M9", "Remington 870", "AK-47"},
+        Callback = function(v)
+        local args = {
+        [1] = workspace.Prison_ITEMS.giver:FindFirstChild(v).ITEMPICKUP
+       }
+     workspace.Remote.ItemHandler:InvokeServer(unpack(args))
+    end
+
+    })
+
+    Main:AddDropdown({
+        Name = "Gun Mod",
+        Default = "1",
+        Options = {"M9", "Remington 870", "AK-47"},
+        Callback = function(v)
+            local module = nil 
+            if game:GetService("Players").LocalPlayer.Backpack:FindFirstChild(v) then
+               module = require(game:GetService("Players").LocalPlayer.Backpack[v].GunStates)
+            elseif game:GetService("Players").LocalPlayer.Character:FindFirstChild(v) then
+                module = require( game:GetService("Players").LocalPlayer.Character[v].GunStates)
+            end
+            if module ~= nil then
+                module["MaxAmmo"] = math.huge
+                module["CurrentAmmo"] = math.huge
+                module["StoredAmmo"] = math.huge
+                module["FireRate"] = 0.00001
+                module["Spread"] = 0
+                module["Range"] = math.huge
+                module["Bullets"] = 10
+                module["ReoloadTime"] = 0.00001
+                module["AutoFire"] = true
+            end
+        end
+   })
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    -- Player
+    local Player = Window:MakeTab({
+        Name = "Player",
+        Icon = "rbxassetid://4483345998",
+        PremiumOnly = false
+    })
+
+    
+    local PlayerSection = Player:AddSection({
+        Name = "Player"
+    })
+
+
+
+
+    PlayerSection:AddSlider({
+        Name = "WalkSpeed",
+        Min = 16,
+        Max = 500,
+        Default = 5,
+        Color = Color3.fromRGB(88, 205, 54),
+        Increment = 1,
+        ValueName = "Walkpeed",
+        Callback = function(v)
+            game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = v
+        end 
+    })
+
+    PlayerSection:AddSlider({
+        Name = "JumpPower",
+        Min = 50,
+        Max = 250,
+        Default = 5,
+        Color = Color3.fromRGB(88, 205, 54),
+        Increment = 1,
+        ValueName = "JumpPower",
+        Callback = function(v)
+            game.Players.LocalPlayer.Character.Humanoid.JumpPower = v
+        end 
+    })
+    
+
+
+
+
+    OrionLib:Init()
+
+end
+
+if game.PlaceId == 3956818381 then
+    local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
+    local Window = OrionLib:MakeWindow({Name = "NinjaLegends", HidePremium = true, SaveConfig = true, ConfigFolder = "PrisonLife"})
+    
+    -- Main
+    local Main = Window:MakeTab({
+        Name = "Main",
+        Icon = "rbxassetid://4483345998",
+        PremiumOnly = false
+    })
+    
+    local MainSection = Main:AddSection({
+        Name = "Main"
+    })
+
+    Main:AddToggle({
+        Name = "AutoSwing",
+        Default = false,
+        Callback = function(v)
+            getgenv().autoswing = v 
+            while true do 
+                if not getgenv().autoswing then return end
+                for _,v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
+                    if v:FindFirstChild("ninjitsuGain") then
+                        game.Players.LocalPlayer.Character.Humanoid:EquipTool(v)
+                        break
+                    end
+                end
+        
+                local args = {
+                [1] = "swingKatana"
+                }
+                game:GetService("Players").LocalPlayer.ninjaEvent:FireServer(unpack(args))
+
+                wait(0.2)
+            end
+        end
+    })
+
+    Main:AddToggle({
+        Name = "AutoSell",
+        Default = false,
+        Callback = function(v)
+            getgenv().autosell = v
+            while true do 
+                if getgenv().autosell == false then return end
+                game:GetService("Workspace").sellAreaCircles["sellAreaCircle16"].circleInner.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+                wait(0.1)
+                game:GetService("Workspace").sellAreaCircles["sellAreaCircle16"].circleInner.CFrame = CFrame.new(0,0,0)
+                wait(0.1)
+                end
+              end 
+         })
+
+
+         Main:AddButton({
+            Name = "Unlocked All Islands",
+            Callback = function()
+                local oldcframe = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+                for _,v in pairs(game:GetService("Workspace").islandUnlockParts:GetChildren()) do
+                 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.CFrame
+                 wait(0.2)
+            end
+        end
+        })
+
+        Main:AddToggle({
+            Name = "Auto Buy All Swords",
+            Default = false,
+            Callback = function(v)
+                getgenv().buyswords = v
+                while true do
+                    if not getgenv().buyswords then return end
+                        local args = {
+                        [1] = "buyAllSwords",
+                        [2] = "Inner Peace Island"
+                        }
+                        game:GetService("Players").LocalPlayer.ninjaEvent:FireServer(unpack(args))
+                     wait(0.8)
+                end 
+            end    
+        })
+
+        Main:AddToggle({
+            Name = "Auto Buy All Belts",
+            Default = false,
+            Callback = function(v)
+                getgenv().buysbelts = v
+                while true do
+                    if not getgenv().buysbelts then return end
+                        local args = {
+                        [1] = "buyAllBelts",
+                        [2] = "Inner Peace Island"
+                        }
+                        game:GetService("Players").LocalPlayer.ninjaEvent:FireServer(unpack(args))
+                     wait(0.8)
+                end 
+            end    
+        })
+
+
+    OrionLib:Init()
+
+end
+
+
+
